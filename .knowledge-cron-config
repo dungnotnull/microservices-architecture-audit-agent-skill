@@ -1,0 +1,53 @@
+# Knowledge Updater Cron Configuration
+# Schedule weekly automated knowledge base updates
+
+# Weekly update every Sunday at 2 AM (system time)
+0 2 * * 0 cd /path/to/microservices-architecture-audit && python tools/knowledge_updater.py >> logs/knowledge_update.log 2>&1
+
+# Alternative: Run every Monday at 3 AM
+# 0 3 * * 1 cd /path/to/microservices-architecture-audit && python tools/knowledge_updater.py >> logs/knowledge_update.log 2>&1
+
+# Alternative: Run every 7 days from last run (not cron-specific)
+# Use systemd timer or task scheduler instead
+
+# Linux/Systemd Instructions:
+# 1. Copy this file to /etc/cron.d/knowledge-updater
+# 2. Ensure the path is correct for your installation
+# 3. Ensure python3 and dependencies are installed
+# 4. Ensure logs directory exists and is writable
+
+# macOS Launchd Instructions:
+# Create ~/Library/LaunchAgents/com.knowledge.updater.plist with:
+# <?xml version="1.0" encoding="UTF-8"?>
+# <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+# <plist version="1.0">
+# <dict>
+#     <key>Label</key>
+#     <string>com.knowledge.updater</string>
+#     <key>ProgramArguments</key>
+#     <array>
+#         <string>/usr/bin/python3</string>
+#         <string>/path/to/microservices-architecture-audit/tools/knowledge_updater.py</string>
+#     </array>
+#     <key>StartCalendarInterval</key>
+#     <dict>
+#         <key>Hour</key>
+#         <integer>2</integer>
+#         <key>Weekday</key>
+#         <integer>0</integer>
+#     </dict>
+#     <key>WorkingDirectory</key>
+#     <string>/path/to/microservices-architecture-audit</string>
+#     <key>StandardOutPath</key>
+#     <string>/path/to/microservices-architecture-audit/logs/knowledge_update.log</string>
+#     <key>StandardErrorPath</key>
+#     <string>/path/to/microservices-architecture-audit/logs/knowledge_update_error.log</string>
+# </dict>
+# </plist>
+
+# Windows Task Scheduler Instructions:
+# Create a scheduled task with:
+# - Trigger: Weekly on Sunday at 2:00 AM
+# - Action: Run python tools\knowledge_updater.py
+# - Start in: D:\skills\microservices-architecture-audit
+# - Redirect output to logs\knowledge_update.log
